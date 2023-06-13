@@ -76,17 +76,26 @@ function getRandomCocktail() {
   axios.get(apiUrl)
     .then(response => {
       const cocktail = response.data.drinks[0];
-      const name = cocktail.strDrink;
-      const instructions = cocktail.strInstructions;
-      const imageUrl = cocktail.strDrinkThumb;
-      
-      document.getElementById('cocktailName').textContent = `Cocktail Name: ${name}`;
-      document.getElementById('cocktailInstructions').textContent = `Instructions: ${instructions}`;
-      document.getElementById('cocktailImage').src = imageUrl;
+      const cocktailName = cocktail.strDrink;
+      const cocktailInstructions = cocktail.strInstructions;
+      const cocktailImageUrl = cocktail.strDrinkThumb;
+
+      const cocktailImageElement = document.getElementById('cocktailImage');
+      cocktailImageElement.src = cocktailImageUrl;
+
+     
+      cocktailImageElement.onload = function() {
+       
+        const imageWidth = this.width;
+        document.getElementById('cocktailInstructions').style.width = `${imageWidth}px`;
+      }
+
+      document.getElementById('cocktailName').textContent = cocktailName;
+      document.getElementById('cocktailInstructions').textContent = cocktailInstructions;
     })
     .catch(error => {
-      console.error('Error fetching cocktail data:', error);
-      document.getElementById('cocktailName').textContent = 'Unable to fetch cocktail data';
+      console.error('Error fetching cocktail:', error);
+      document.getElementById('cocktail').textContent = 'Unable to fetch cocktail';
     });
 }
 
